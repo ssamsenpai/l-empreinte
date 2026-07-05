@@ -1,0 +1,229 @@
+/* ============================================================
+   L'EMPREINTE menu data + view routing
+   ------------------------------------------------------------
+   Navigation: a category grid (home) -> tap a category to open its
+   own page of items -> "Catégories" goes back to pick another.
+   Backed by the URL hash so the browser back button + deep links work.
+
+   Photos: curated, professionally-shot images from Pexels (free, no
+   API key, hotlink-friendly). Every image is requested at the same
+   4:5 crop (cards) / 1:1 crop (category circles) so the whole menu
+   reads as one consistent, classy set. Each <img> has an onerror
+   handler swapping in an inline SVG placeholder so a dead link never
+   breaks the layout. Swap any `px` id below to change a photo.
+   ============================================================ */
+
+const pxImg = (id, w, h) =>
+  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=${w}&h=${h}`;
+const cardImg  = (id) => pxImg(id, 560, 700);   // 4:5
+const coverImg = (id) => pxImg(id, 500, 500);   // 1:1
+
+const MENU = [
+  {
+    id: "boissons-chaudes",
+    title: "Boissons Chaudes",
+    px: 6747870,
+    items: [
+      { name: "Expresso",         note: "",             price: "50DA",      px: 12039010 },
+      { name: "Capsule",          note: "Caps · L'Or",  price: "150-250DA", px: 25409661 },
+      { name: "Lait au Chocolat", note: "",             price: "150DA",     px: 6313268 },
+      { name: "Latte",            note: "",             price: "150DA",     px: 997670 },
+      { name: "Mocca",            note: "",             price: "150DA",     px: 31139336 },
+      { name: "Americano",        note: "",             price: "150DA",     px: 18604200 },
+      { name: "Cappuccino",       note: "",             price: "200DA",     px: 4913342 },
+      { name: "Macchiato",        note: "",             price: "200DA",     px: 19252265 },
+      { name: "Chocolat Chaud",   note: "",             price: "200DA",     px: 15149193 },
+      { name: "Thé Maison",       note: "",             price: "100DA",     px: 13110529 },
+      { name: "Thé Lipton",       note: "",             price: "150DA",     px: 9136977 },
+      { name: "Tisane Infusion",  note: "",             price: "150DA",     px: 230477 },
+    ],
+  },
+  {
+    id: "boissons-fraiches",
+    title: "Boissons Fraîches",
+    px: 18142624,
+    items: [
+      { name: "Iced Americano", note: "",                                    price: "200DA", px: 35229818 },
+      { name: "Iced Latte",     note: "Vanille · Caramel · Noisette",        price: "200DA", px: 8605909 },
+      { name: "Iced Thé",       note: "",                                    price: "200DA", px: 37464365 },
+      { name: "Café Bonbon",    note: "",                                    price: "200DA", px: 4869290 },
+      { name: "Affogato",       note: "Café · Glace · Vanille",              price: "200DA", px: 35028555 },
+      { name: "Frigo",          note: "Ifruit · Star · Ifri · Mozaya · Izem", price: "100DA", px: 3651045 },
+      { name: "Canette",        note: "",                                    price: "150DA", px: 24022865 },
+      { name: "Jus de Citron",  note: "",                                    price: "200DA", px: 33107433 },
+      { name: "Panaché",        note: "",                                    price: "300DA", px: 33107437 },
+      { name: "Jus Pressé",     note: "",                                    price: "400DA", px: 96620 },
+      { name: "Mojito",         note: "Menthe · Fraise · Bleu Hawaï",        price: "400DA", px: 8394976 },
+      { name: "Pina Colada",    note: "",                                    price: "450DA", px: 8771963 },
+      { name: "Frappé",         note: "Chocolat · Caramel · Café",           price: "500DA", px: 27626320 },
+      { name: "Milkshake",      note: "Vanille · Fraise · Banane",           price: "500DA", px: 16630831 },
+      { name: "Frappuccino",    note: "Chocolat · Caramel",                  price: "500DA", px: 32542054 },
+    ],
+  },
+  {
+    id: "dessert-patisserie",
+    title: "Dessert & Pâtisserie",
+    px: 33335365,
+    items: [
+      { name: "Millefeuille",         note: "", price: "100DA", px: 5978248 },
+      { name: "Éclair",               note: "", price: "150DA", px: 13177922 },
+      { name: "Tartelette",           note: "", price: "200DA", px: 15249752 },
+      { name: "Tranche",              note: "", price: "250DA", px: 30924031 },
+      { name: "Cookie",               note: "", price: "250DA", px: 8081574 },
+      { name: "Brownie",              note: "", price: "250DA", px: 9170501 },
+      { name: "Fondant Chocolat",     note: "", price: "300DA", px: 33312981 },
+      { name: "Panna Cotta",          note: "", price: "300DA", px: 28594279 },
+      { name: "Tarte Citron",         note: "", price: "300DA", px: 12124889 },
+      { name: "Tiramisu",             note: "", price: "400DA", px: 19582734 },
+      { name: "Crème Brûlée",         note: "", price: "400DA", px: 36782571 },
+      { name: "Cheesecake",           note: "", price: "400DA", px: 27959901 },
+      { name: "Cheesecake Pistache",  note: "", price: "450DA", px: 11653565 },
+      { name: "Trompe l'Œil",         note: "", price: "450DA", px: 4669235 },
+    ],
+  },
+  {
+    id: "crepes-pancakes",
+    title: "Crêpes & Pancakes",
+    px: 35487016,
+    items: [
+      { name: "Pancake au Chocolat", note: "",                 price: "350DA",     px: 5377573 },
+      { name: "Crêpe Moelleuse",     note: "Mordjan · Nutella", price: "350-400DA", px: 574111 },
+      { name: "Crêpe Croustillante", note: "",                 price: "400DA",     px: 35057729 },
+      { name: "Crêpe Moelleuse",     note: "Fraise · Banane",   price: "500DA",     px: 4725654 },
+    ],
+  },
+  {
+    id: "viennoiserie",
+    title: "Viennoiserie",
+    px: 12660003,
+    items: [
+      { name: "Croissant",        note: "", price: "50DA",  px: 20002837 },
+      { name: "Pain au Chocolat", note: "", price: "50DA",  px: 13736076 },
+      { name: "Pain au Raisin",   note: "", price: "100DA", px: 16192282 },
+      { name: "Napolitaine",      note: "", price: "100DA", px: 35095957 },
+      { name: "Pain Suisse",      note: "", price: "100DA", px: 31079905 },
+      { name: "Torsade",          note: "", price: "100DA", px: 3850387 },
+      { name: "Jalousie",         note: "", price: "100DA", px: 13425794 },
+    ],
+  },
+  {
+    id: "les-sales",
+    title: "Les Salés",
+    px: 8305726,
+    items: [
+      { name: "Mini Pizza",     note: "",              price: "100DA", px: 31882545 },
+      { name: "Soufflé",        note: "",              price: "100DA", px: 19964400 },
+      { name: "Chausson",       note: "",              price: "100DA", px: 4324285 },
+      { name: "Monchon",        note: "",              price: "100DA", px: 10885316 },
+      { name: "Quiche",         note: "",              price: "200DA", px: 109836 },
+      { name: "Mini Burger",    note: "",              price: "200DA", px: 11299741 },
+      { name: "Club Sandwich",  note: "Poulet · Thon", price: "350DA", px: 11441814 },
+    ],
+  },
+];
+
+const PLACEHOLDER = `
+  <div class="card__ph" role="img" aria-label="Photo indisponible">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+         stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+      <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+      <line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/>
+      <line x1="14" y1="1" x2="14" y2="4"/>
+    </svg>
+  </div>`;
+
+const imgTag = (src, alt, cls) => `
+  ${PLACEHOLDER}
+  <img class="${cls}" src="${src}" alt="${alt}" loading="lazy"
+       onload="this.previousElementSibling.style.display='none'"
+       onerror="this.style.display='none'; this.previousElementSibling.style.display='flex';" />`;
+
+/* ---------- category grid (home) ---------- */
+function buildHome() {
+  const grid = document.getElementById("catGrid");
+  MENU.forEach((cat) => {
+    const btn = document.createElement("button");
+    btn.className = "cat-card";
+    btn.type = "button";
+    btn.innerHTML = `
+      <span class="cat-card__circle">${imgTag(coverImg(cat.px), cat.title, "")}</span>
+      <span class="cat-card__name">${cat.title}</span>`;
+    btn.addEventListener("click", () => { location.hash = "#/" + cat.id; });
+    grid.appendChild(btn);
+  });
+}
+
+/* ---------- one category page ---------- */
+function renderCategory(cat) {
+  document.getElementById("catTitle").textContent = cat.title;
+  const wrap = document.getElementById("catItems");
+  wrap.innerHTML = "";
+  cat.items.forEach((item) => {
+    const card = document.createElement("article");
+    card.className = "card";
+    const note = item.note ? `<p class="card__note">${item.note}</p>` : "";
+    card.innerHTML = `
+      <div class="card__media">${imgTag(cardImg(item.px), item.name, "card__img")}</div>
+      <div class="card__overlay">
+        <h3 class="card__name">${item.name}</h3>
+        ${note}
+        <span class="card__price">${item.price}</span>
+      </div>`;
+    wrap.appendChild(card);
+  });
+  revealCards();
+}
+
+/* ---------- routing ---------- */
+const home = document.getElementById("view-home");
+const detail = document.getElementById("view-category");
+
+function route() {
+  const m = location.hash.match(/^#\/(.+)$/);
+  const cat = m && MENU.find((c) => c.id === m[1]);
+  if (cat) {
+    home.hidden = true;
+    detail.hidden = false;
+    renderCategory(cat);
+  } else {
+    detail.hidden = true;
+    home.hidden = false;
+  }
+  window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+}
+
+/* ---------- reveal cards on scroll ---------- */
+function revealCards() {
+  const cards = document.querySelectorAll(".card");
+  if (!("IntersectionObserver" in window)) {
+    cards.forEach((c) => c.classList.add("is-visible"));
+    return;
+  }
+  const obs = new IntersectionObserver((entries, o) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add("is-visible"); o.unobserve(e.target); }
+    });
+  }, { threshold: 0.08, rootMargin: "0px 0px -40px 0px" });
+  cards.forEach((c) => obs.observe(c));
+}
+
+/* ---------- back-to-top visibility ---------- */
+function setupToTop() {
+  const toTop = document.getElementById("toTop");
+  const hero = document.querySelector(".hero");
+  new IntersectionObserver((entries) => {
+    toTop.classList.toggle("is-shown", !entries[0].isIntersecting);
+  }, { threshold: 0 }).observe(hero);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  buildHome();
+  document.getElementById("backBtn").addEventListener("click", () => {
+    if (location.hash) location.hash = "";
+    else route();
+  });
+  window.addEventListener("hashchange", route);
+  setupToTop();
+  route();
+});
