@@ -175,6 +175,17 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 26px 16px 44px; }
 .back:active { transform: scale(0.96); }
 @media (hover: hover) { .back:hover { background: var(--rust); color: #fff; } }
 
+/* bottom "back to categories" after the items */
+.detail__foot { display: flex; justify-content: center; padding: 30px 0 6px; }
+.back--foot {
+  font-size: 14px;
+  padding: 11px 22px;
+  background: var(--rust);
+  color: #fff;
+  border-color: var(--rust);
+}
+@media (hover: hover) { .back--foot:hover { background: var(--rust-2); border-color: var(--rust-2); } }
+
 .section__head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
 .section__title {
   font-family: var(--font-display);

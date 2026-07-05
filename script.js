@@ -17,6 +17,8 @@ const pxImg = (id, w, h) =>
   `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=${w}&h=${h}`;
 const cardImg  = (id) => pxImg(id, 560, 700);   // 4:5
 const coverImg = (id) => pxImg(id, 500, 500);   // 1:1
+// real in-house photo (assets/menu/*.jpg) wins over the Pexels stand-in when present
+const itemSrc  = (it) => it.img || cardImg(it.px);
 
 const MENU = [
   {
@@ -24,10 +26,10 @@ const MENU = [
     title: "Boissons Chaudes",
     px: 6747870,
     items: [
-      { name: "Expresso",         note: "",             price: "50DA",      px: 12039010 },
+      { name: "Expresso",         note: "",             price: "50DA",      px: 12039010, img: "assets/menu/espresso.jpg" },
       { name: "Capsule",          note: "Caps · L'Or",  price: "150-250DA", px: 25409661 },
       { name: "Lait au Chocolat", note: "",             price: "150DA",     px: 6313268 },
-      { name: "Latte",            note: "",             price: "150DA",     px: 997670 },
+      { name: "Latte",            note: "",             price: "150DA",     px: 997670, img: "assets/menu/latte.jpg" },
       { name: "Mocca",            note: "",             price: "150DA",     px: 31139336 },
       { name: "Americano",        note: "",             price: "150DA",     px: 18604200 },
       { name: "Cappuccino",       note: "",             price: "200DA",     px: 4913342 },
@@ -43,20 +45,20 @@ const MENU = [
     title: "Boissons Fraîches",
     px: 18142624,
     items: [
-      { name: "Iced Americano", note: "",                                    price: "200DA", px: 35229818 },
-      { name: "Iced Latte",     note: "Vanille · Caramel · Noisette",        price: "200DA", px: 8605909 },
-      { name: "Iced Thé",       note: "",                                    price: "200DA", px: 37464365 },
+      { name: "Iced Americano", note: "",                                    price: "200DA", px: 35229818, img: "assets/menu/iced-americano.jpg" },
+      { name: "Iced Latte",     note: "Vanille · Caramel · Noisette",        price: "200DA", px: 8605909, img: "assets/menu/iced-latte.jpg" },
+      { name: "Iced Thé",       note: "",                                    price: "200DA", px: 37464365, img: "assets/menu/iced-the.jpg" },
       { name: "Café Bonbon",    note: "",                                    price: "200DA", px: 4869290 },
-      { name: "Affogato",       note: "Café · Glace · Vanille",              price: "200DA", px: 35028555 },
+      { name: "Affogato",       note: "Café · Glace · Vanille",              price: "200DA", px: 35028555, img: "assets/menu/affogato.jpg" },
       { name: "Frigo",          note: "Ifruit · Star · Ifri · Mozaya · Izem", price: "100DA", px: 3651045 },
       { name: "Canette",        note: "",                                    price: "150DA", px: 24022865 },
       { name: "Jus de Citron",  note: "",                                    price: "200DA", px: 33107433 },
       { name: "Panaché",        note: "",                                    price: "300DA", px: 33107437 },
-      { name: "Jus Pressé",     note: "",                                    price: "400DA", px: 96620 },
-      { name: "Mojito",         note: "Menthe · Fraise · Bleu Hawaï",        price: "400DA", px: 8394976 },
-      { name: "Pina Colada",    note: "",                                    price: "450DA", px: 8771963 },
+      { name: "Jus Pressé",     note: "",                                    price: "400DA", px: 96620, img: "assets/menu/jus-presse.jpg" },
+      { name: "Mojito",         note: "Menthe · Fraise · Bleu Hawaï",        price: "400DA", px: 8394976, img: "assets/menu/mojito.jpg" },
+      { name: "Pina Colada",    note: "",                                    price: "450DA", px: 8771963, img: "assets/menu/pina-colada.jpg" },
       { name: "Frappé",         note: "Chocolat · Caramel · Café",           price: "500DA", px: 27626320 },
-      { name: "Milkshake",      note: "Vanille · Fraise · Banane",           price: "500DA", px: 16630831 },
+      { name: "Milkshake",      note: "Vanille · Fraise · Banane",           price: "500DA", px: 16630831, img: "assets/menu/milkshake.jpg" },
       { name: "Frappuccino",    note: "Chocolat · Caramel",                  price: "500DA", px: 32542054 },
     ],
   },
@@ -67,16 +69,16 @@ const MENU = [
     items: [
       { name: "Millefeuille",         note: "", price: "100DA", px: 5978248 },
       { name: "Éclair",               note: "", price: "150DA", px: 13177922 },
-      { name: "Tartelette",           note: "", price: "200DA", px: 15249752 },
+      { name: "Tartelette",           note: "", price: "200DA", px: 15249752, img: "assets/menu/tartelette.jpg" },
       { name: "Tranche",              note: "", price: "250DA", px: 30924031 },
       { name: "Cookie",               note: "", price: "250DA", px: 8081574 },
       { name: "Brownie",              note: "", price: "250DA", px: 9170501 },
       { name: "Fondant Chocolat",     note: "", price: "300DA", px: 33312981 },
       { name: "Panna Cotta",          note: "", price: "300DA", px: 28594279 },
-      { name: "Tarte Citron",         note: "", price: "300DA", px: 12124889 },
+      { name: "Tarte Citron",         note: "", price: "300DA", px: 12124889, img: "assets/menu/tarte-citron.jpg" },
       { name: "Tiramisu",             note: "", price: "400DA", px: 19582734 },
       { name: "Crème Brûlée",         note: "", price: "400DA", px: 36782571 },
-      { name: "Cheesecake",           note: "", price: "400DA", px: 27959901 },
+      { name: "Cheesecake",           note: "", price: "400DA", px: 27959901, img: "assets/menu/cheesecake.jpg" },
       { name: "Cheesecake Pistache",  note: "", price: "450DA", px: 11653565 },
       { name: "Trompe l'Œil",         note: "", price: "450DA", px: 4669235 },
     ],
@@ -164,7 +166,7 @@ function renderCategory(cat) {
     card.className = "card";
     const note = item.note ? `<p class="card__note">${item.note}</p>` : "";
     card.innerHTML = `
-      <div class="card__media">${imgTag(cardImg(item.px), item.name, "card__img")}</div>
+      <div class="card__media">${imgTag(itemSrc(item), item.name, "card__img")}</div>
       <div class="card__overlay">
         <h3 class="card__name">${item.name}</h3>
         ${note}
@@ -219,10 +221,9 @@ function setupToTop() {
 
 document.addEventListener("DOMContentLoaded", () => {
   buildHome();
-  document.getElementById("backBtn").addEventListener("click", () => {
-    if (location.hash) location.hash = "";
-    else route();
-  });
+  const goHome = () => { if (location.hash) location.hash = ""; else route(); };
+  document.getElementById("backBtn").addEventListener("click", goHome);
+  document.getElementById("backBtnFoot").addEventListener("click", goHome);
   window.addEventListener("hashchange", route);
   setupToTop();
   route();
