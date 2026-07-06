@@ -50,7 +50,7 @@ const MENU = [
       { name: "Iced Thé",       note: "",                                    price: "200DA", px: 37464365, img: "assets/menu/iced-the.jpg" },
       { name: "Café Bonbon",    note: "",                                    price: "200DA", px: 4869290 },
       { name: "Affogato",       note: "Café · Glace · Vanille",              price: "200DA", px: 35028555, img: "assets/menu/affogato.jpg" },
-      { name: "Frigo",          note: "Ifruit · Star · Ifri · Mozaya · Izem", price: "100DA", px: 3651045 },
+      { name: "Frigo",          note: "Ifruit · Star · Ifri · Mozaya · Izem", price: "100DA", imgs: ["assets/menu/frigo-1.jpg", "assets/menu/frigo-2.jpg", "assets/menu/frigo-3.jpg"] },
       { name: "Canette",        note: "",                                    price: "150DA", px: 24022865 },
       { name: "Jus de Citron",  note: "",                                    price: "200DA", px: 33107433 },
       { name: "Panaché",        note: "",                                    price: "300DA", px: 33107437 },
@@ -60,6 +60,15 @@ const MENU = [
       { name: "Frappé",         note: "Chocolat · Caramel · Café",           price: "500DA", px: 27626320 },
       { name: "Milkshake",      note: "Vanille · Fraise · Banane",           price: "500DA", px: 16630831, img: "assets/menu/milkshake.jpg" },
       { name: "Frappuccino",    note: "Chocolat · Caramel",                  price: "500DA", px: 32542054 },
+      { name: "Oasis Thé Pêché", note: "",                                   price: "500DA", img: "assets/menu/oasis.jpg" },
+      { name: "Luxe D'orge",    note: "Boisson maltée",                      price: "500DA", img: "assets/menu/luxe-dorge.jpg" },
+      { name: "Hamoud",         note: "La Blanche",                          price: "150DA", img: "assets/menu/hamoud.jpg" },
+      { name: "Selecto",        note: "",                                    price: "150DA", img: "assets/menu/selecto.jpg" },
+      { name: "Pepsi",          note: "",                                    price: "150DA", img: "assets/menu/pepsi.jpg" },
+      { name: "Orangina",       note: "",                                    price: "150DA", img: "assets/menu/orangina.jpg" },
+      { name: "Barbican",       note: "Fraise",                              price: "500DA", img: "assets/menu/barbican.jpg" },
+      { name: "Red Bull",       note: "Energy drink",                        price: "600DA", img: "assets/menu/redbull.jpg" },
+      { name: "Coca-Cola Cherry", note: "",                                  price: "500DA", img: "assets/menu/coca-cherry.jpg" },
     ],
   },
   {
@@ -72,7 +81,11 @@ const MENU = [
       { name: "Tartelette",           note: "", price: "200DA", px: 15249752, img: "assets/menu/tartelette.jpg" },
       { name: "Tranche",              note: "", price: "250DA", px: 30924031 },
       { name: "Cookie",               note: "", price: "250DA", px: 8081574 },
-      { name: "Brownie",              note: "", price: "250DA", px: 9170501 },
+      { name: "Brownie",              note: "", price: "250DA", img: "assets/menu/brownie.jpg" },
+      { name: "Cookie Pistache",      note: "", price: "300DA", img: "assets/menu/cookie-pistache.jpg" },
+      { name: "New York Roll",        note: "", price: "250DA", img: "assets/menu/ny-roll.jpg" },
+      { name: "Raffaello",            note: "", price: "450DA", img: "assets/menu/raffaello.jpg" },
+      { name: "Cake Pistache",        note: "", price: "450DA", img: "assets/menu/cake-pistache.jpg" },
       { name: "Fondant Chocolat",     note: "", price: "300DA", px: 33312981 },
       { name: "Panna Cotta",          note: "", price: "300DA", px: 28594279 },
       { name: "Tarte Citron",         note: "", price: "300DA", px: 12124889, img: "assets/menu/tarte-citron.jpg" },
@@ -99,11 +112,11 @@ const MENU = [
     title: "Viennoiserie",
     px: 12660003,
     items: [
-      { name: "Croissant",        note: "", price: "50DA",  px: 20002837 },
-      { name: "Pain au Chocolat", note: "", price: "50DA",  px: 13736076 },
-      { name: "Pain au Raisin",   note: "", price: "100DA", px: 16192282 },
-      { name: "Napolitaine",      note: "", price: "100DA", px: 35095957 },
-      { name: "Pain Suisse",      note: "", price: "100DA", px: 31079905 },
+      { name: "Croissant",        note: "", price: "50DA",  img: "assets/menu/croissant.jpg" },
+      { name: "Pain au Chocolat", note: "", price: "50DA",  img: "assets/menu/pain-choco.jpg" },
+      { name: "Pain au Raisin",   note: "", price: "100DA", img: "assets/menu/pain-raisin.jpg" },
+      { name: "Napolitaine",      note: "", price: "100DA", img: "assets/menu/napolitaine.jpg" },
+      { name: "Pain Suisse",      note: "", price: "100DA", img: "assets/menu/pain-suisse.jpg" },
       { name: "Torsade",          note: "", price: "100DA", px: 3850387 },
       { name: "Jalousie",         note: "", price: "100DA", px: 13425794 },
     ],
@@ -141,6 +154,38 @@ const imgTag = (src, alt, cls) => `
        onload="this.previousElementSibling.style.display='none'"
        onerror="this.style.display='none'; this.previousElementSibling.style.display='flex';" />`;
 
+/* media: single image, or a swipeable gallery (item.imgs) with dot indicator */
+function mediaHTML(item) {
+  if (item.imgs && item.imgs.length > 1) {
+    const slides = item.imgs
+      .map((src) => `<div class="slide">${imgTag(src, item.name, "card__img")}</div>`)
+      .join("");
+    const dots = item.imgs
+      .map((_, i) => `<i class="dot${i === 0 ? " is-active" : ""}"></i>`)
+      .join("");
+    return `<div class="slider"><div class="slider__track">${slides}</div><div class="slider__dots">${dots}</div></div>`;
+  }
+  return imgTag(itemSrc(item), item.name, "card__img");
+}
+
+/* wire each gallery: sync dots with swipe position, dots jump to slide */
+function setupSliders() {
+  document.querySelectorAll(".slider").forEach((sl) => {
+    const track = sl.querySelector(".slider__track");
+    const dots = [...sl.querySelectorAll(".dot")];
+    const sync = () => {
+      const i = Math.round(track.scrollLeft / track.clientWidth);
+      dots.forEach((d, j) => d.classList.toggle("is-active", j === i));
+    };
+    track.addEventListener("scroll", () => requestAnimationFrame(sync), { passive: true });
+    dots.forEach((d, i) =>
+      d.addEventListener("click", () =>
+        track.scrollTo({ left: i * track.clientWidth, behavior: "smooth" })
+      )
+    );
+  });
+}
+
 /* ---------- category grid (home) ---------- */
 function buildHome() {
   const grid = document.getElementById("catGrid");
@@ -166,7 +211,7 @@ function renderCategory(cat) {
     card.className = "card";
     const note = item.note ? `<p class="card__note">${item.note}</p>` : "";
     card.innerHTML = `
-      <div class="card__media">${imgTag(itemSrc(item), item.name, "card__img")}</div>
+      <div class="card__media">${mediaHTML(item)}</div>
       <div class="card__overlay">
         <h3 class="card__name">${item.name}</h3>
         ${note}
@@ -175,6 +220,7 @@ function renderCategory(cat) {
     wrap.appendChild(card);
   });
   revealCards();
+  setupSliders();
 }
 
 /* ---------- routing ---------- */
