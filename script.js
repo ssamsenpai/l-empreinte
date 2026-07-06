@@ -90,7 +90,7 @@ const MENU = [
       { name: "Panna Cotta",          note: "", price: "300DA", px: 28594279 },
       { name: "Tarte Citron",         note: "", price: "300DA", px: 12124889, img: "assets/menu/tarte-citron.jpg" },
       { name: "Tiramisu",             note: "", price: "400DA", px: 19582734 },
-      { name: "Crème Brûlée",         note: "", price: "400DA", px: 36782571 },
+      { name: "Crème Brûlée",         note: "", price: "400DA", img: "assets/menu/creme-brulee.jpg" },
       { name: "Cheesecake",           note: "", price: "400DA", px: 27959901, img: "assets/menu/cheesecake.jpg" },
       { name: "Cheesecake Pistache",  note: "", price: "450DA", px: 11653565 },
       { name: "Trompe l'Œil",         note: "", price: "450DA", px: 4669235 },
