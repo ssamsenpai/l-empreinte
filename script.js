@@ -25,9 +25,10 @@ const MENU = [
     id: "boissons-chaudes",
     title: "Boissons Chaudes",
     px: 6747870,
+    cimg: "assets/menu/mocca.jpg",
     items: [
       { name: "Expresso",         note: "",             price: "50DA",      px: 12039010, img: "assets/menu/espresso.jpg" },
-      { name: "Capsule",          note: "Caps · L'Or",  price: "150-250DA", px: 25409661 },
+      { name: "Capsule",          note: "Caps · L'Or",  price: "150-250DA", img: "assets/menu/capsule.jpg" },
       { name: "Lait au Chocolat", note: "",             price: "150DA",     px: 6313268 },
       { name: "Latte",            note: "",             price: "150DA",     px: 997670, img: "assets/menu/latte.jpg" },
       { name: "Mocca",            note: "",             price: "150DA",     img: "assets/menu/mocca.jpg" },
@@ -44,6 +45,7 @@ const MENU = [
     id: "boissons-fraiches",
     title: "Boissons Fraîches",
     px: 18142624,
+    cimg: "assets/menu/pina-colada.jpg",
     items: [
       { name: "Iced Americano", note: "",                                    price: "200DA", px: 35229818, img: "assets/menu/iced-americano.jpg" },
       { name: "Iced Latte",     note: "Vanille · Caramel · Noisette",        price: "200DA", px: 8605909, img: "assets/menu/iced-latte.jpg" },
@@ -73,6 +75,7 @@ const MENU = [
     id: "dessert-patisserie",
     title: "Dessert & Pâtisserie",
     px: 33335365,
+    cimg: "assets/menu/cheesecake.jpg",
     items: [
       { name: "Millefeuille",         note: "", price: "100DA", px: 5978248 },
       { name: "Éclair",               note: "", price: "150DA", px: 13177922 },
@@ -109,13 +112,13 @@ const MENU = [
     id: "viennoiserie",
     title: "Viennoiserie",
     px: 12660003,
+    cimg: "assets/menu/croissant.jpg",
     items: [
       { name: "Croissant",        note: "", price: "50DA",  img: "assets/menu/croissant.jpg" },
       { name: "Pain au Chocolat", note: "", price: "50DA",  img: "assets/menu/pain-choco.jpg" },
       { name: "Pain au Raisin",   note: "", price: "100DA", img: "assets/menu/pain-raisin.jpg" },
       { name: "Napolitaine",      note: "", price: "100DA", img: "assets/menu/napolitaine.jpg" },
       { name: "Pain Suisse",      note: "", price: "100DA", img: "assets/menu/pain-suisse.jpg" },
-      { name: "Torsade",          note: "", price: "100DA", px: 3850387 },
       { name: "Jalousie",         note: "", price: "100DA", px: 13425794 },
     ],
   },
@@ -123,13 +126,14 @@ const MENU = [
     id: "les-sales",
     title: "Les Salés",
     px: 8305726,
+    cimg: "assets/menu/mini-pizza.jpg",
     items: [
-      { name: "Mini Pizza",     note: "",              price: "100DA", px: 31882545 },
+      { name: "Mini Pizza",     note: "",              price: "130DA", img: "assets/menu/mini-pizza.jpg" },
+      { name: "Monchon",        note: "Poulet · Thon", price: "100DA", imgs: ["assets/menu/monchon-poulet.jpg", "assets/menu/monchon-thon.jpg"] },
+      { name: "Chausson",       note: "Poulet fumé · 4 fromages · Viande hachée", price: "100DA", imgs: ["assets/menu/chausson-poulet.jpg", "assets/menu/chausson-fromages.jpg", "assets/menu/chausson-viande.jpg"] },
       { name: "Soufflé",        note: "",              price: "100DA", px: 19964400 },
-      { name: "Chausson",       note: "",              price: "100DA", px: 4324285 },
-      { name: "Monchon",        note: "",              price: "100DA", px: 10885316 },
       { name: "Quiche",         note: "",              price: "200DA", px: 109836 },
-      { name: "Mini Burger",    note: "",              price: "200DA", px: 11299741 },
+      { name: "Mini Burger",    note: "",              price: "200DA", img: "assets/menu/mini-burger.jpg" },
       { name: "Club Sandwich",  note: "Poulet · Thon", price: "350DA", px: 11441814 },
     ],
   },
@@ -192,7 +196,7 @@ function buildHome() {
     btn.className = "cat-card";
     btn.type = "button";
     btn.innerHTML = `
-      <span class="cat-card__circle">${imgTag(coverImg(cat.px), cat.title, "")}</span>
+      <span class="cat-card__circle">${imgTag(cat.cimg || coverImg(cat.px), cat.title, "")}</span>
       <span class="cat-card__name">${cat.title}</span>`;
     btn.addEventListener("click", () => { location.hash = "#/" + cat.id; });
     grid.appendChild(btn);
