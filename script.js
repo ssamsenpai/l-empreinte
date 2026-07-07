@@ -27,7 +27,7 @@ const MENU = [
     px: 6747870,
     cimg: "assets/menu/mocca.jpg",
     items: [
-      { name: "Expresso",         note: "",             price: "50DA",      px: 12039010, img: "assets/menu/espresso.jpg" },
+      { name: "Expresso",         note: "",             price: "50-100DA",  img: "assets/menu/espresso.jpg" },
       { name: "Capsule",          note: "Caps · L'Or",  price: "150-250DA", img: "assets/menu/capsule.jpg" },
       { name: "Lait au Chocolat", note: "",             price: "150DA",     px: 6313268 },
       { name: "Latte",            note: "",             price: "150DA",     px: 997670, img: "assets/menu/latte.jpg" },
