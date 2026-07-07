@@ -104,7 +104,7 @@ const MENU = [
     items: [
       { name: "Pancake au Chocolat", note: "",                 price: "350DA",     px: 5377573 },
       { name: "Crêpe Moelleuse",     note: "Mordjan · Nutella", price: "350-400DA", px: 574111 },
-      { name: "Crêpe Croustillante", note: "",                 price: "400DA",     px: 35057729 },
+      { name: "Crêpe Croustillante", note: "",                 price: "400DA",     img: "assets/menu/crepe-croustillante.jpg" },
       { name: "Crêpe Moelleuse",     note: "Fraise · Banane",   price: "500DA",     px: 4725654 },
     ],
   },
